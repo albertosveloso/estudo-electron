@@ -1,6 +1,6 @@
 //o app controla o ciclo de vida da aplicacao
 // BrowserWindow é o modulo para criacao de janelas
-const { app, BrowserWindow } = require('electron'); // importante apenas submodulo app do electron
+const { app, BrowserWindow, ipcMain } = require('electron'); // importante apenas submodulo app do electron
 
 app.on('ready', () =>{
   console.log('Aplicação iniciada');
@@ -16,4 +16,25 @@ app.on('ready', () =>{
 //de todas janelas do aplicativo
 app.on('window-all-closed', () => {
   app.quit();
+});
+
+//ipcMain escutando o evento que foi enviado pelo processo de renderer
+let sobreWindow = null;
+ipcMain.on('abrir-janela-sobre', () => {
+    if(sobreWindow == null){
+        sobreWindow = new BrowserWindow({
+            width: 300,
+            height: 220,
+            alwaysOnTop: true,
+            frame: false
+        });
+        sobreWindow.on('closed', () => {
+           sobreWindow = null;
+       })
+    }
+    sobreWindow.loadURL(`file://${__dirname}/app/sobre.html`);
+});
+
+ipcMain.on('fechar-janela-sobre', () => {
+    sobreWindow.close();
 });
