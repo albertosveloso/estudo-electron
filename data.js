@@ -7,15 +7,28 @@ module.exports = {
       let arquivoDoCurso = __dirname + '/data/' + curso + '.json';
 
       if(fs.existsSync(arquivoDoCurso)){
-        //se exister somente salvar
-
+        this.adicionaTempoAoCurso(arquivoDoCurso, tempoEstudado);
       }else{
         //criar e salvar
         this.criaArquivoDeCurso(arquivoDoCurso, {})
         .then(()=>{
-            //salvar dados
+            this.adicionaTempoAoCurso(arquivoDoCurso, tempoEstudado);
         })
       }
+  },
+  adicionaTempoAoCurso(arquivoDoCurso, tempoEstudado){
+    let dados = {
+      ultimoEstudo: new Date().toString(),
+      tempo: tempoEstudado
+    }
+
+    jsonfile.writeFile(arquivoDoCurso, dados, {spaces: 2}) //spaces:2 deixa o visual melhor do json
+        .then(()=>{
+          console.log('tempo salvo com sucesso');;
+        }).catch((err)=>{
+          console.log(err);
+        })
+
   },
   criaArquivoDeCurso(nomeArquivo, conteudoArquivo){
     return jsonfile.writeFile(nomeArquivo, conteudoArquivo)
