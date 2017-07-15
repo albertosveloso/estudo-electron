@@ -1,11 +1,14 @@
+
+const { ipcRenderer} = require('electron'); //biblioteca para comunicar entre processos
 const moment = require('moment'); //biblioteca especialista em trabalhar com data, horas etc...
 let segundos;
 let timer;
+let tempo;
 
 //exportar objeto, criação de módulo node.js
 module.exports = {
   iniciar(el){
-      let tempo = moment.duration(el.textContent);
+      tempo = moment.duration(el.textContent);
       segundos = tempo.asSeconds();
 
       clearInterval(timer); //evitando problemas de ficar acelerando o timer, limpa o timer anterior
@@ -17,8 +20,11 @@ module.exports = {
        el.textContent = this.segundosParaTempo(segundos);
      }, 1000);
   },
-  parar(){
+  parar(curso){
     clearInterval(timer);
+    let tempoEstudado = this.segundosParaTempo(segundos);
+
+    ipcRenderer.send('curso-parado', curso, tempoEstudado);
   },
   segundosParaTempo(segundos){
       //00:00:00
