@@ -1,14 +1,17 @@
 //o app controla o ciclo de vida da aplicacao
 // BrowserWindow é o modulo para criacao de janelas
-const { app, BrowserWindow, ipcMain } = require('electron'); // importante apenas submodulo app do electron
+const { app, BrowserWindow, ipcMain, Tray} = require('electron'); // importante apenas submodulo app do electron
 const data = require('./data');
 
+let tray = null; //icones do tray
 app.on('ready', () =>{
   console.log('Aplicação iniciada');
   let mainWindow = new BrowserWindow({
     width: 600,
     height: 400
   });
+
+  tray = new Tray(__dirname + '/app/img/icon-tray.png');
 
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 });
