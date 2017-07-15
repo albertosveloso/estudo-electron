@@ -1,17 +1,17 @@
 const { ipcRenderer } = require('electron');
+const timer = require('./timer'); //usar meu arquivo timer.js como se fosse um  módulo do node
 
 let linkSobre = document.querySelector('#link-sobre');
-
-console.log(linkSobre);
+let botaoPlay = document.querySelector('.botao-play');
+let tempo = document.querySelector('.tempo');
 
 linkSobre.addEventListener("click", function(){
     ipcRenderer.send('abrir-janela-sobre');
 });
 
-let botaoPlay = document.querySelector('.botao-play');
-
 let imgs = ['img/play-button.svg', 'img/stop-button.svg'];
 botaoPlay.addEventListener("click", function(){
     imgs = imgs.reverse(); //invertendo array
+    timer.iniciar(tempo);
     botaoPlay.src = imgs[0];
 });
