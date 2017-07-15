@@ -1,7 +1,8 @@
 //o app controla o ciclo de vida da aplicacao
 // BrowserWindow é o modulo para criacao de janelas
-const { app, BrowserWindow, ipcMain, Tray} = require('electron'); // importante apenas submodulo app do electron
+const { app, BrowserWindow, ipcMain, Tray, Menu} = require('electron'); // importante apenas submodulo app do electron
 const data = require('./data');
+const templateGenerator = require('./template');
 
 let tray = null; //icones do tray
 app.on('ready', () =>{
@@ -12,6 +13,9 @@ app.on('ready', () =>{
   });
 
   tray = new Tray(__dirname + '/app/img/icon-tray.png');
+  let template = templateGenerator.geraTrayTemplate();
+  let trayMenu = Menu.buildFromTemplate(template);
+  tray.setContextMenu(trayMenu);
 
   mainWindow.loadURL(`file://${__dirname}/app/index.html`);
 });
