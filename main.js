@@ -1,6 +1,7 @@
 //o app controla o ciclo de vida da aplicacao
 // BrowserWindow é o modulo para criacao de janelas
 const { app, BrowserWindow, ipcMain } = require('electron'); // importante apenas submodulo app do electron
+const data = require('./data');
 
 app.on('ready', () =>{
   console.log('Aplicação iniciada');
@@ -39,7 +40,8 @@ ipcMain.on('fechar-janela-sobre', () => {
     sobreWindow.close();
 });
 
-//Escutando o curso parado e parametros
+//Escutando o evento curso parado e parametros e salvando dados em json
 ipcMain.on('curso-parado', (event, curso, tempoEstudado)=>{
   console.log(`O curso ${curso} foi estudado por ${tempoEstudado}`);
+  data.salvaDados(curso, tempoEstudado);
 });
