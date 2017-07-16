@@ -27,11 +27,14 @@ module.exports ={
       this.templateInicial = template;
       return template;
     },
-    adicionaCursoNoTray(curso){
+    adicionaCursoNoTray(curso, win){
       this.templateInicial.push({
         label: curso,
         type: 'radio',
-        checked: true
+        checked: true,
+        click: () =>{
+          win.send('curso-trocado', curso);
+        }
       })
 
       return this.templateInicial;
