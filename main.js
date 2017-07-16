@@ -13,7 +13,7 @@ app.on('ready', () =>{
   });
 
   tray = new Tray(__dirname + '/app/img/icon-tray.png');
-  let template = templateGenerator.geraTrayTemplate();
+  let template = templateGenerator.geraTrayTemplate(mainWindow);
   let trayMenu = Menu.buildFromTemplate(template);
   tray.setContextMenu(trayMenu);
 
@@ -51,4 +51,10 @@ ipcMain.on('fechar-janela-sobre', () => {
 ipcMain.on('curso-parado', (event, curso, tempoEstudado)=>{
   console.log(`O curso ${curso} foi estudado por ${tempoEstudado}`);
   data.salvaDados(curso, tempoEstudado);
+});
+
+ipcMain.on('curso-adicionado', (event, novoCurso)=>{
+  let novoTemplate = templateGenerator.adicionaCursoNoTray(novoCurso);
+  let novoTrayMenu = Menu.buildFromTemplate(novoTemplate); //template com novo curso
+  tray.setContextMenu(novoTrayMenu); //Novo menu com curso adicionado
 });

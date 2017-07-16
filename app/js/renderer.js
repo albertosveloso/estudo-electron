@@ -43,4 +43,16 @@ botaoAdicionar.addEventListener('click', function(){
   tempo.textContent = '00:00:00';
 
   campoAdicionar.value = '';
+
+  //mandando evento para o main process atualizar o traymenu
+  ipcRenderer.send('curso-adicionado', novoCurso);
+});
+
+ipcRenderer.on('curso-trocado', (event, nomeCurso) => {
+  data.pegaDados(nomeCurso)
+    .then((dados)=>{
+      tempo.textContent = dados.tempo;
+    })
+
+  curso.textContent = nomeCurso;
 });
